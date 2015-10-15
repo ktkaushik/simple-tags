@@ -1,3 +1,7 @@
+/*!*
+ * Author - Kaushik Thirthappa (thirthappa.kaushik@gmail.com)
+ */
+
 (function ($) {
 
 
@@ -7,25 +11,39 @@
         $this.css('display', 'none');
         $(a).insertAfter(this); // create our own div
         $input = $this.siblings().find('.simple-tag-input'); // jQuery instance of the div
-        var tag = new Tag($this, $input, opts); // instantiate the instance
+        $block = $this.siblings('.simple-tags-block');
+        var tag = new Tag($this, $block, $input, opts); // instantiate the instance
     };
 
-    var Tag = function ($el, $input, opts) {
+    var Tag = function ($el, $block, $input, opts) {
         this.$el = $el;
-        this.$input = $input;
         this.opts = opts;
-
-        var _this = this;
+        this.$input = $input;
+        this.$block = $block;
 
         // bind events
+        this.bindEvents();
+    };
+
+    Tag.prototype.bindEvents = function() {
+        var _this = this;
+
+        // Bind the keypress on the keyboard to this function.
+        // Only applicable to the instance of the input this library has created.
         this.$input.keydown(function (event) {
             _this.keyDown(event);
         });
 
+        // Remove the tag click event
         $(document).on('click', '.remove-simple-tag', function (event) {
             _this.removeTagClick($('.remove-simple-tag').index(this));
         });
-    }
+
+        // Bind the top block wherein the click will focus on the input
+        this.$block.click(function() {
+           _this.$input.focus();
+        })
+    };
 
     Tag.prototype.keyDown = function (event) {
 
@@ -99,7 +117,7 @@
           , el = "<span class='simple-tag'>" + $element.val() + "<span><a class='remove-simple-tag' href='#'>x</a></span></span>";
 
         $(el).insertBefore(this.$input);
-        this.$input.val('');
+        this.$input.val(''); // reset the value of the textbox
     };
 
 })(jQuery);

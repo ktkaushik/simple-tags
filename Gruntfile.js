@@ -21,7 +21,9 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                mangle: true
+                mangle: true,
+                preserveComments: 'some',
+                banner: '/* <%= pkg.name %> - v<%= pkg.version %>*/\n'
             },
             my_target: {
                 files: {
