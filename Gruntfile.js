@@ -6,10 +6,6 @@ module.exports = function(grunt) {
 
     var timestamp = new Date().getTime() + "";
 
-    grunt.option("js_prod", js_prod);
-    grunt.option("css_prod", css_prod);
-    grunt.option("timestamp", timestamp);
-
     // 1. All configuration goes here
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -47,9 +43,10 @@ module.exports = function(grunt) {
     // 3. Where we tell Grunt we plan to use this plug-in.
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     require('time-grunt')(grunt);
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-    grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['uglify', 'cssmin']);
     grunt.registerTask('js-task', ['uglify']);
     grunt.registerTask('css-task', ['cssmin']);
 };
